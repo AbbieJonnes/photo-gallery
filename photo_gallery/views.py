@@ -46,8 +46,14 @@ def logout_view(request):
 def home(request):
     photos = Photo.objects.all().order_by('-created_at')
 
+    tag = request.GET.get('tag', '').strip()
+
+    if tag:
+        photos = photos.filter(tags__icontains=tag)
+
     return render(request, 'home.html', {
-        'photos': photos
+        'photos': photos,
+        'selected_tag': tag
     })
 
 @login_required
