@@ -132,3 +132,30 @@ def photo_detail(request, photo_id):
     return render(request, 'photo_detail.html', {
         'photo': photo
     })
+
+
+@login_required
+def photo_interaction(request, photo_id, action):
+    photo = get_object_or_404(Photo, id=photo_id)
+
+    if request.method == 'POST':
+
+        if action == 'like':
+            if request.user in photo.dislikes.all():
+                photo.dislikes.remove(request.user)
+
+            if request.user in photo.likes.all():
+                photo.likes.remove(request.user)
+            else:
+                photo.likes.add(request.user)
+
+        elif action == 'dislike':
+            if request.user in photo.likes.all():
+                photo.likes.remove(request.user)
+
+            if request.user in photo.dislikes.all():
+                photo.dislikes.remove(request.user)
+            else:
+                photo.dislikes.add(request.user)
+
+    return redirect('photo_detail', photo_id=photo.id)
