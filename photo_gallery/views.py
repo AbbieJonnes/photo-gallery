@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import RegistrationForm, ProfileForm
+from .forms import RegistrationForm, ProfileForm, UserUpdateForm
 from .models import Profile
 
 
@@ -52,20 +52,30 @@ def profile(request):
     user_profile = get_object_or_404(Profile, user=request.user)
 
     if request.method == 'POST':
-        form = ProfileForm(
+        profile_form = ProfileForm(
             request.POST,
             request.FILES,
             instance=user_profile
         )
 
-        if form.is_valid():
-            form.save()
+        user_form = UserUpdateForm(
+            request.POST,
+            instance=request.user
+        )
+
+        if profile_form.is_valid() and user_form.is_valid():
+            profile_form.save()
+            user_form.save()
+
             messages.success(request, 'Profile updated successfully!')
             return redirect('profile')
+
     else:
-        form = ProfileForm(instance=user_profile)
+        profile_form = ProfileForm(instance=user_profile)
+        user_form = UserUpdateForm(instance=request.user)
 
     return render(request, 'profile.html', {
-        'form': form,
+        'profile_form': profile_form,
+        'user_form': user_form,
         'profile': user_profile
     })
