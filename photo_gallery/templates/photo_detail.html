@@ -78,6 +78,45 @@
                     </div>
                 {% endif %}
 
+                <div class="flex gap-4 mt-8">
+
+    <form method="POST"
+          action="{% url 'photo_interaction' photo.id 'like' %}">
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition">
+
+            <i class="fa-solid fa-heart mr-2"></i>
+            Like
+            <span class="ml-1">
+                {{ photo.likes.count }}
+            </span>
+
+        </button>
+    </form>
+
+
+    <form method="POST"
+          action="{% url 'photo_interaction' photo.id 'dislike' %}">
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="bg-gray-600 text-white px-5 py-3 rounded-lg hover:bg-gray-700 transition">
+
+            <i class="fa-solid fa-thumbs-down mr-2"></i>
+            Dislike
+            <span class="ml-1">
+                {{ photo.dislikes.count }}
+            </span>
+
+        </button>
+    </form>
+
+</div>
+
                 <div class="border-t mt-8 pt-6 text-gray-500">
                     <i class="fa-regular fa-calendar mr-1"></i>
                     Uploaded on {{ photo.created_at|date:"F d, Y" }}
