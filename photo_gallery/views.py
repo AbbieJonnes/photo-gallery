@@ -124,3 +124,11 @@ def upload_photo(request):
     return render(request, 'upload_photo.html', {
         'form': form
     })
+
+
+def photo_detail(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+
+    return render(request, 'photo_detail.html', {
+        'photo': photo
+    })
