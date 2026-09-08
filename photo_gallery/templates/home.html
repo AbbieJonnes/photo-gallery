@@ -149,11 +149,11 @@
                                     {{ photo.user.username }}
                                 </p>
 
-                                <a href="#"
-                                   class="text-blue-600 hover:underline">
-                                    View Details
-                                </a>
-
+                                <a href="{% url 'photo_detail' photo.id %}"
+   class="text-blue-600 hover:underline">
+    View Details
+    <i class="fa-solid fa-arrow-right ml-1"></i>
+</a>
                             </div>
 
                         </div>
