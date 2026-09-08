@@ -55,7 +55,6 @@ def home(request):
         'photos': photos,
         'selected_tag': tag
     })
-
 @login_required
 def profile(request):
     user_profile = get_object_or_404(Profile, user=request.user)
