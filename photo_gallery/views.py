@@ -12,6 +12,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, 'Account created successfully! Welcome to Photo Gallery.')
             return redirect('home')
     else:
         form = RegistrationForm()
@@ -26,12 +27,14 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            messages.success(request, 'Login successful! Welcome back.')
             return redirect('home')
+        else:
+            messages.error(request, 'Invalid username or password. Please try again.')
     else:
         form = AuthenticationForm()
 
     return render(request, 'login.html', {'form': form})
-
 
 def logout_view(request):
     logout(request)
