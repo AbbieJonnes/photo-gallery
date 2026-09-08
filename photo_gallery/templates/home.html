@@ -103,6 +103,41 @@
 
     <!-- Gallery -->
     <main class="max-w-7xl mx-auto px-6 pb-12">
+        <div class="bg-white rounded-xl shadow-sm p-5 mb-8">
+
+    <form method="GET" class="flex flex-col sm:flex-row gap-3">
+
+        <div class="flex-1">
+            <input
+                type="text"
+                name="tag"
+                value="{{ selected_tag }}"
+                placeholder="Filter by tag, e.g. nature"
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+        </div>
+
+        <button
+            type="submit"
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+
+            <i class="fa-solid fa-filter mr-2"></i>
+            Filter
+        </button>
+
+        {% if selected_tag %}
+            <a
+                href="{% url 'home' %}"
+                class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-100 transition text-center">
+
+                <i class="fa-solid fa-xmark mr-2"></i>
+                Clear
+            </a>
+        {% endif %}
+
+    </form>
+
+</div>
 
         {% if photos %}
 
