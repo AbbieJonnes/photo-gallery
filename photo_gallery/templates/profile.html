@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <div class="max-w-2xl mx-auto px-6 py-10">
+
+        <!-- Back to Home -->
+        <a href="{% url 'home' %}"
+           class="text-blue-600 hover:underline">
+            ← Back to Home
+        </a>
+
+        <div class="bg-white rounded-xl shadow-md p-8 mt-6">
+
+            <h1 class="text-3xl font-bold text-center mb-8">
+                My Profile
+            </h1>
+
+            <!-- Profile Picture -->
+            <div class="flex justify-center mb-6">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}"
+                         alt="Profile Picture"
+                         class="w-32 h-32 rounded-full object-cover">
+                {% else %}
+                    <div class="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center">
+                        <span class="text-gray-600 text-4xl">
+                            👤
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- User Information -->
+            <div class="space-y-4 mb-8">
+
+                <div>
+                    <p class="text-sm text-gray-500">Username</p>
+                    <p class="text-lg font-semibold">
+                        {{ user.username }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-500">Email</p>
+                    <p class="text-lg font-semibold">
+                        {{ user.email }}
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Profile Form -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button
+                    type="submit"
+                    class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+                    Update Profile
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
