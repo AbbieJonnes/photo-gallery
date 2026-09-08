@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, ProfileForm
+from .models import Profile
 
 
 def register(request):
@@ -43,3 +45,27 @@ def logout_view(request):
 
 def home(request):
     return render(request, 'home.html')
+
+
+@login_required
+def profile(request):
+    user_profile = get_object_or_404(Profile, user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=user_profile
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=user_profile)
+
+    return render(request, 'profile.html', {
+        'form': form,
+        'profile': user_profile
+    })
