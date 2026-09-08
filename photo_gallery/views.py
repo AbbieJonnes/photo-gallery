@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -78,4 +78,26 @@ def profile(request):
         'profile_form': profile_form,
         'user_form': user_form,
         'profile': user_profile
+    })
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+
+            messages.success(
+                request,
+                'Your password has been changed successfully!'
+            )
+            return redirect('profile')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    return render(request, 'change_password.html', {
+        'form': form
     })
