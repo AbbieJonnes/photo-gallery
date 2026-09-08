@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import RegistrationForm, ProfileForm, UserUpdateForm
+from .forms import RegistrationForm, ProfileForm, UserUpdateForm, PhotoForm
 from .models import Profile
 
 
@@ -99,5 +99,25 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
 
     return render(request, 'change_password.html', {
+        'form': form
+    })
+
+
+@login_required
+def upload_photo(request):
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.user = request.user
+            photo.save()
+
+            messages.success(request, 'Photo uploaded successfully!')
+            return redirect('home')
+    else:
+        form = PhotoForm()
+
+    return render(request, 'upload_photo.html', {
         'form': form
     })
