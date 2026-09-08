@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .forms import RegistrationForm, ProfileForm, UserUpdateForm, PhotoForm
-from .models import Profile
+from .models import Profile, Photo
 
 
 def register(request):
@@ -44,8 +44,11 @@ def logout_view(request):
     return redirect('home')
 
 def home(request):
-    return render(request, 'home.html')
+    photos = Photo.objects.all().order_by('-created_at')
 
+    return render(request, 'home.html', {
+        'photos': photos
+    })
 
 @login_required
 def profile(request):
